@@ -1,0 +1,6 @@
+.find {
+    margin-top: 30px;
+    color:black;
+ display: flex;
+ flex-direction: column;
+}

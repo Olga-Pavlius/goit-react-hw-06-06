@@ -1,0 +1,36 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    border: solid 1px;
+    border-color: #363535;
+    border-radius: 5px;
+    gap: 20px;
+    padding: 10px;
+}
+
+.name {
+ color:black;
+ display: flex;
+ flex-direction: column;
+ border-color: rgb(94, 92, 92);
+
+}
+
+.number {
+ color:black;
+ display: flex;
+ flex-direction: column;
+ border-color: rgb(94, 92, 92);
+}
+
+.btn {
+ color:black;
+ background: rgb(241 239 239);
+ border-color: black;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+  }

@@ -5,6 +5,7 @@
     align-items: center;
     padding-left: 5px;
     gap: 5px;
+    max-width: 260px;
 }
 
 .button {
@@ -15,4 +16,8 @@
     padding: 0;
     height: 30px;
     margin-right: 5px;
+}
+
+.text {
+    display: flex;
 }

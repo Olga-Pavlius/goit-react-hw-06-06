@@ -1,137 +1,70 @@
-// import css from "./ContactForm.module.css"
-
-// export default function ContactForm ( ) {
-//     return (
-//         <form className={css.form}>
-//             <div className={css.name}>
-//                 <label>Name</label>
-//                 <input type="text" />
-//             </div>
-
-//             <div className={css.number}>
-//                 <label>Number</label>
-//                 <input type="text" />
-//             </div>
-//             <button className={css.btn} type="submit">Add contact</button>
-//         </form>
-//     )
-// }
-
-// import { useFormik, Form, ErrorMessage } from "formik";
-// import * as Yup from "yup";
-// import { nanoid } from "nanoid";
-// import css from "./ContactForm.module.css";
-
-// export default function ContactForm({ onAddContact }) {
-//     const formik = useFormik({
-//         initialValues: {
-//             name: "",
-//             number: "",
-//         },
-//         validationSchema: Yup.object({
-//             name: Yup.string()
-//                 .min(3, "Minimum 3 characters")
-//                 .max(50, "Maximum 50 characters")
-//                 .required("This field is required"),
-//             number: Yup.string()
-//                 .matches(/^\d{3}-\d{2}-\d{2}$/, "Format: 123-45-67")
-//                 .required("Required"),
-//         }),
-//         onSubmit: (values, { resetForm }) => {
-//             const newContact = {
-//                 id: nanoid(),
-//                 name: values.name,
-//                 number: values.number,
-//             };
-//             onAddContact(newContact);
-//             resetForm();
-//         },
-//     });
-
-//     return (
-//         <form className={css.form} onSubmit={formik.handleSubmit}>
-//             <div className={css.name}>
-//                 <label>Name</label>
-//                 <input
-//                     type="text"
-//                     name="name"
-//                     value={formik.values.name}
-//                     onChange={formik.handleChange}
-//                     onBlur={formik.handleBlur}
-//                 />
-//                 {formik.touched.name && formik.errors.name && (
-//                     <div className={css.error}>{formik.errors.name}</div>
-//                 )}
-//                 {/* <ErrorMessage name="name" /> */}
-//             </div>
-
-//             <div className={css.number}>
-//                 <label>Number</label>
-//                 <input
-//                     type="text"
-//                     name="number"
-//                     value={formik.values.number}
-//                     onChange={formik.handleChange}
-//                     onBlur={formik.handleBlur}
-//                 />
-//                 {formik.touched.number && formik.errors.number && (
-//                     <div className={css.error}>{formik.errors.number}</div>
-//                 )}
-//             </div>
-
-//             <button className={css.btn} type="submit">Add contact</button>
-//         </form>
-//     );
-// }
-
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+import { useId } from "react";
 import { nanoid } from "nanoid";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
 import css from "./ContactForm.module.css";
+import { ErrorMessage } from "formik";
+import { addContact } from "../../redux/contactsSlice";
+import { useDispatch } from "react-redux";
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(3, "Must be at least 3 characters")
-    .max(50, "Must be 50 characters or less")
-    .required("Required"),
-  number: Yup.string()
-    .matches(/^\d{3}-\d{2}-\d{2}$/, "Format: 123-45-67")
-    .required("Required"),
-});
+const ContactForm = () => {
+  const dispatch = useDispatch();
 
-export default function ContactForm({ onAddContact }) {
+  const nameId = useId();
+  const numberId = useId();
+  const initialValues = {
+    name: "",
+    number: "",
+  };
+
+  const contactSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(3, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required!"),
+    number: Yup.number().positive().integer().required("Required!"),
+  });
+
+  const handleSubmit = (values, actions) => {
+    console.log(values);
+    dispatch(addContact({ ...values, id: nanoid() }));
+    actions.resetForm();
+  };
+
   return (
     <Formik
-      initialValues={{ name: "", number: "" }}
-      validationSchema={validationSchema}
-      validateOnChange={true} // Валідація при кожному вводі символу
-      validateOnBlur={true} // Помилки залишаються після втрати фокусу
-      onSubmit={(values, { resetForm }) => {
-        onAddContact({ id: nanoid(), ...values });
-        resetForm();
-      }}
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={contactSchema}
     >
-      {({ errors, touched }) => (
-        <Form className={css.form}>
-          <div className={css.name}>
-            <label>Name</label>
-            <Field type="text" name="name" className={css.input} />
-            <ErrorMessage name="name" component="div" className={css.error} />
-          </div>
+      <Form className={css.form}>
+        <div className={css.formdiv}>
+          <label htmlFor={nameId} className={css.label}>
+            Name
+          </label>
+          <Field type="text" name="name" id={nameId} className={css.input} />
+          <ErrorMessage name="name" component="span" />
+        </div>
 
-          <div className={css.number}>
-            <label>Number</label>
-            <Field type="text" name="number" className={css.input} />
-            <ErrorMessage name="number" component="div" className={css.error} />
-          </div>
+        <div className={css.formdiv}>
+          <label htmlFor={numberId} className={css.label}>
+            Number
+          </label>
+          <Field
+            type="number"
+            name="number"
+            className={css.input}
+            id={numberId}
+          />
+          <ErrorMessage name="number" component="span" />
+        </div>
 
-          <button className={css.btn} type="submit">
-            Add contact
-          </button>
-        </Form>
-      )}
+        <button type="submit" className={css.button}>
+          Add contact
+        </button>
+      </Form>
     </Formik>
   );
-}
+};
 
-
+export default ContactForm;

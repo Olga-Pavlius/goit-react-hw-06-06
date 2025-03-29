@@ -6,31 +6,35 @@
     border-radius: 5px;
     gap: 20px;
     padding: 10px;
-}
+    margin-bottom: 20px;
+  }
 
-.name {
- color:black;
- display: flex;
- flex-direction: column;
- border-color: rgb(94, 92, 92);
-
-}
-
-.number {
- color:black;
- display: flex;
- flex-direction: column;
- border-color: rgb(94, 92, 92);
-}
-
-.btn {
- color:black;
- background: rgb(241 239 239);
- border-color: black;
-}
-
-.error {
-    color: red;
-    font-size: 12px;
-    margin-top: 4px;
+  .formdiv {
+    color: black;
+    display: flex;
+    flex-direction: column;
+    border-color: rgb(94, 92, 92);
+    align-items: flex-start;
+  }
+  
+  .label {
+    font-size: 18px;
+    margin-top: 16px;
+    font-weight: bold;
+  }
+  
+  .input {
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 18px;
+  }
+  
+  .button {
+    align-self: center;
+    border: 1px solid #213547;
+  }
+  
+  .button:hover {
+    color: rgb(255, 255, 255);
+    background-color: #213547;
   }
